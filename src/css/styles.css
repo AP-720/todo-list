@@ -1,0 +1,87 @@
+:root {
+	--main-bg-color: #8fabc2;
+	--green: #6b8976;
+	--yellow: #fae1be;
+	--orange: #ff7262;
+	--dark-green: #768687;
+	--dark-blue: #2e5263;
+	--light-grey: #d7d7d7;
+	--almost-white: #f6f6f6;
+}
+
+body,
+h1,
+h2,
+ul,
+button {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.5rem;
+	display: flex;
+}
+
+.sidebar {
+	background-color: var(--main-bg-color);
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.title {
+	color: var(--green);
+	font-size: 3.5rem;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.project-title {
+	font-size: 2rem;
+	padding-bottom: 10px;
+	text-decoration: underline;
+	color: var(--dark-blue);
+}
+
+.project-list {
+	list-style: none;
+	color: var(--almost-white);
+	padding-bottom: 10px;
+}
+
+.sidebar form {
+	display: flex;
+	justify-content: center;
+	gap: 1%;
+}
+
+.new-project-input {
+	width: 70%;
+	border-radius: 15px;
+	border: 3px solid var(--orange);
+	padding: 5px 8px;
+	background-color: var(--light-grey);
+	color: var(--dark-blue);
+}
+
+.btn-new-project {
+	padding: 5px 10px;
+	border-radius: 15px;
+	background-color: var(--yellow);
+	border: 3px solid var(--orange);
+	color: var(--dark-green);
+	cursor: pointer;
+}
+
+.btn-new-project:hover {
+	background-color: #ff7262;
+	border: 3px solid var(--yellow);
+	color: var(--light-grey);
+}
+
+.body-container {
+	background-color: var(--light-grey);
+}
