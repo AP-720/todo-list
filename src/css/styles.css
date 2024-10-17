@@ -13,7 +13,8 @@ body,
 h1,
 h2,
 ul,
-button {
+button,
+p {
 	padding: 0;
 	margin: 0;
 }
@@ -26,10 +27,11 @@ body {
 
 .sidebar {
 	background-color: var(--main-bg-color);
-	width: 250px;
+	/* width: 200px; */
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
+	padding: 0 3%;
 }
 
 .title {
@@ -40,7 +42,7 @@ body {
 }
 
 .project-title {
-	font-size: 2rem;
+	font-size: 2.2rem;
 	padding-bottom: 10px;
 	text-decoration: underline;
 	color: var(--dark-blue);
@@ -49,17 +51,27 @@ body {
 .project-list {
 	list-style: none;
 	color: var(--almost-white);
-	padding-bottom: 10px;
+	padding-bottom: 5%;
+	cursor: pointer;
+}
+
+.project-name {
+	font-size: 1.8rem;
+	transition: opacity 150ms ease-in;
+}
+
+.project-name:hover {
+	opacity: 0.85;
 }
 
 .sidebar form {
 	display: flex;
-	justify-content: center;
-	gap: 1%;
+	justify-content: space-between;
+	gap: 2%;
 }
 
 .new-project-input {
-	width: 70%;
+	width: 100%;
 	border-radius: 15px;
 	border: 3px solid var(--orange);
 	padding: 5px 8px;
@@ -82,6 +94,84 @@ body {
 	color: var(--light-grey);
 }
 
+/* Body */
 .body-container {
-	background-color: var(--light-grey);
+	background-color: var(--almost-white);
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding-right: 5%;
+	font-size: 1.3rem;
+}
+
+/* Task Container */
+
+.tasks-container {
+	background-color: var(--almost-white);
+	width: 80%;
+	margin: 3% 0;
+	display: flex;
+	flex-direction: column;
+	/* align-items: flex-start; */
+}
+
+.project-name-title {
+	color: var(--dark-blue);
+	text-decoration: underline;
+	padding-bottom: 1%;
+}
+
+.task-body {
+	display: flex;
+	flex-direction: column;
+}
+
+.task {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 3px dashed var(--green);
+	padding: 2% 0;
+	/* width: 90%; */
+}
+
+.input-container {
+	display: flex;
+	gap: 2%;
+	width: 50%;
+}
+
+.input-container label {
+	white-space: nowrap;
+}
+
+.task-info {
+	display: flex;
+	width: 50%;
+	justify-content: space-between;
+	align-items: center;
+	white-space: nowrap;
+}
+
+.task-duedate,
+.task-priority {
+	font-size: 1.3rem;
+}
+
+.task-btn-container {
+	display: flex;
+	gap: 10%;
+}
+
+.task-btn-container button {
+	border: none;
+	cursor: pointer;
+}
+
+.fa-trash-can:hover {
+	color: var(--orange);
+}
+
+.fa-pen-to-square:hover {
+	color: var(--dark-blue);
 }
