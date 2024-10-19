@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div class="sidebar">
-			<h1 class="title">ToDo</h1>
+			<h1 class="title">TəDu</h1>
 
 			<h2 class="project-title">Projects</h2>
 			<ul class="project-list" data-project-list></ul>
@@ -27,9 +27,14 @@
 
 		<div class="body-container">
 			<div class="tasks-container">
-				<h2 class="project-name-title" data-project-name-title>
-					Project Title
-				</h2>
+				<div class="project-container">
+					<h2 class="project-name-title" data-project-name-title>
+						Project Title
+					</h2>
+					<button class="new-task-btn" data-new-task-btn>
+						<i class="fa-solid fa-circle-plus"></i>
+					</button>
+				</div>
 
 				<div class="task-body">
 					<div class="task">
@@ -65,5 +70,30 @@
 				</div>
 			</div>
 		</div>
+
+		<dialog class="task-modal" data-task-modal>
+			<div class="task-form-container">
+				<h3 class="form-title">Add Task</h3>
+				<form action="" id="add-task">
+					<label for="task">Task:</label>
+					<input type="text" name="task" id="task" required />
+
+					<label for="date-due">Date Due:</label>
+					<input type="date" name="date-due" id="date-due" required />
+
+					<label for="priority">Priority:</label>
+					<select name="priority" id="priority">
+						<option value="0" selected>Low</option>
+						<option value="1">Medium</option>
+						<option value="2">High</option>
+					</select>
+
+					<div class="form-btns">
+						<button class="cancel-task-btn" data-cancel-task-btn>Cancel</button>
+						<button class="add-task-btn" data-add-task-btn>Add Task</button>
+					</div>
+				</form>
+			</div>
+		</dialog>
 	</body>
 </html>
