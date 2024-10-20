@@ -58,11 +58,16 @@ body {
 
 .project-name {
 	font-size: 1.8rem;
-	transition: opacity 150ms ease-in;
+	transition: transform 0.25s ease-in-out
 }
 
 .project-name:hover {
-	opacity: 0.85;
+	transform: scale(1.1);
+}
+
+.selected-project {
+	font-weight: 800;
+	color: var(--green);
 }
 
 .sidebar form {

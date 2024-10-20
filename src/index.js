@@ -8,3 +8,5 @@ import { Render } from "./render";
 
 const project = new Projects();
 const page = new Render();
+
+// page.renderProject()
