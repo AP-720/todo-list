@@ -58,7 +58,7 @@ body {
 
 .project-name {
 	font-size: 1.8rem;
-	transition: transform 0.25s ease-in-out
+	transition: transform 0.25s ease-in-out;
 }
 
 .project-name:hover {
@@ -66,6 +66,7 @@ body {
 }
 
 .selected-project {
+	transform: scale(1.1);
 	font-weight: 800;
 	color: var(--green);
 }
@@ -73,6 +74,7 @@ body {
 .sidebar form {
 	display: flex;
 	justify-content: space-between;
+	/* align-items: center; */
 	gap: 2%;
 }
 
@@ -226,8 +228,11 @@ form {
 	display: grid;
 }
 
-label,
-input {
+label {
+	margin-bottom: 2%;
+}
+
+.task input {
 	margin-bottom: 2%;
 }
 

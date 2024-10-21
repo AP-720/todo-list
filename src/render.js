@@ -1,7 +1,9 @@
-// import { Projects } from "./projects";
+import { LocalStorage } from "./localStorage";
 
 export class Render {
 	constructor(projectsArray) {
+		this.localStorage = new LocalStorage();
+
 		this.projectsArray = projectsArray;
 		this.selectedProjectId = null;
 
@@ -18,8 +20,6 @@ export class Render {
 		this.projectList.addEventListener("click", (event) =>
 			this.getSelectedProjectId(event)
 		);
-
-		// this.renderProject()
 	}
 
 	renderProject() {
@@ -61,6 +61,8 @@ export class Render {
 			});
 
 			event.target.classList.add("selected-project");
+
+			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
 			// this.renderProject()
 		}
 	}

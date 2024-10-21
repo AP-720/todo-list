@@ -1,23 +1,15 @@
 import { format } from "date-fns";
 import { Render } from "./render";
+import { LocalStorage } from "./localStorage";
 
 export class Projects {
 	constructor() {
-		this.projectsArray = [
-			{
-				id: 1,
-				name: "test 1",
-			},
-			{
-				id: 2,
-				name: "test 2",
-			},
-		];
+		this.LocalStorage = new LocalStorage();
+		this.projectsArray = this.LocalStorage.getProjects();
+		this.selectedProjectId = this.LocalStorage.getSelectedProjectId();
 
 		this.render = new Render(this.projectsArray);
-
-		this.currentDate = new Date();
-		this.formattedDate = format(this.currentDate, "yyyy-MM-dd HH:mm:ss");
+		this.render.selectedProjectId = this.selectedProjectId;
 
 		this.newProjectForm = document.querySelector("[data-new-project-form]");
 		this.newProjectInput = document.querySelector("[data-new-project-input]");
@@ -29,12 +21,11 @@ export class Projects {
 		);
 	}
 
-	getProjects() {
-		return this.projectsArray;
-	}
-
 	createNewProject(name) {
-		return { id: this.formattedDate, name: name, tasks: [] };
+		const currentDate = new Date();
+		const formattedDate = format(currentDate, "yyyy-MM-dd HH:mm:ss");
+
+		return { id: formattedDate, name: name, tasks: [] };
 	}
 
 	addNewProject(event) {
@@ -45,7 +36,7 @@ export class Projects {
 		const newProject = this.createNewProject(name);
 		this.projectsArray.push(newProject);
 
-		console.log(this.projectsArray);
+		this.LocalStorage.saveProjects(this.projectsArray);
 
 		this.render.renderProject();
 
