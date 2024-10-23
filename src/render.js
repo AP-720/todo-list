@@ -5,21 +5,23 @@ export class Render {
 		this.localStorage = new LocalStorage();
 
 		this.projectsArray = projectsArray;
-		this.selectedProjectId = null;
+		this.selectedProjectId = this.localStorage.getSelectedProjectId();
 
 		this.projectContainer = document.querySelector("[data-project-list]");
 		this.modal = document.querySelector("[data-task-modal]");
 		this.addTaskForm = document.getElementById("add-task");
-		this.projectList = document.querySelector("[data-project-list]");
+		this.projectTitle = document.querySelector("[data-project-name-title]");
 
 		this.createTaskBtn = document.querySelector("[data-new-task-btn]");
 		this.cancelTaskBtn = document.querySelector("[data-cancel-task-btn]");
 
 		this.createTaskBtn.addEventListener("click", () => this.showModal());
 		this.cancelTaskBtn.addEventListener("click", () => this.closeModal());
-		this.projectList.addEventListener("click", (event) =>
+		this.projectContainer.addEventListener("click", (event) =>
 			this.getSelectedProjectId(event)
 		);
+
+		this.updateProjectTitle();
 	}
 
 	renderProject() {
@@ -62,8 +64,20 @@ export class Render {
 
 			event.target.classList.add("selected-project");
 
+			this.updateProjectTitle();
+
 			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
-			// this.renderProject()
+		}
+	}
+
+	updateProjectTitle() {
+		if (this.selectedProjectId) {
+			const selectProject = this.projectsArray.find(
+				(project) => project.id === this.selectedProjectId
+			);
+			if (selectProject) {
+				this.projectTitle.innerText = selectProject.name;
+			}
 		}
 	}
 
