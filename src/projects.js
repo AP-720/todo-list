@@ -36,6 +36,10 @@ export class Projects {
 		const newProject = this.createNewProject(name);
 		this.projectsArray.push(newProject);
 
+		this.selectedProjectId = newProject.id;
+		this.LocalStorage.saveSelectedProjectId(this.selectedProjectId);
+		this.render.selectedProjectId = this.selectedProjectId;
+
 		this.LocalStorage.saveProjects(this.projectsArray);
 
 		this.render.renderProject();

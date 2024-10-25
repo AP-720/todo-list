@@ -202,6 +202,27 @@ body {
 	color: var(--dark-blue);
 }
 
+.delete-btn-container {
+	padding-top: 2%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.delete-project-btn {
+	padding: 5px 10px;
+	border-radius: 15px;
+	background-color: var(--yellow);
+	border: 3px solid var(--orange);
+	color: var(--green);
+	cursor: pointer;
+}
+
+.delete-project-btn:hover {
+	background-color: var(--orange);
+	border: 3px solid var(--yellow);
+	color: var(--dark-blue);
+}
+
 /* Task Form */
 
 .task-modal {
@@ -229,11 +250,9 @@ form {
 }
 
 label {
-
 }
 
 .task input {
-
 }
 
 .form-btns {

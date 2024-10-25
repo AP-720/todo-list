@@ -8,4 +8,6 @@ import { Render } from "./render";
 
 const project = new Projects();
 
+// Render().renderprojects()
+
 // page.updateProjectTitle;
