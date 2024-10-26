@@ -33,16 +33,17 @@ export class Projects {
 
 		const name = this.newProjectInput.value;
 		if (name == null || name === "") return;
+
 		const newProject = this.createNewProject(name);
 		this.projectsArray.push(newProject);
 
 		this.selectedProjectId = newProject.id;
-		this.LocalStorage.saveSelectedProjectId(this.selectedProjectId);
-		this.render.selectedProjectId = this.selectedProjectId;
 
 		this.LocalStorage.saveProjects(this.projectsArray);
+		this.LocalStorage.saveSelectedProjectId(this.selectedProjectId);
 
-		this.render.renderProject();
+		this.render.selectedProjectId = this.selectedProjectId;
+		this.render.updateProjectsArray(this.projectsArray);
 
 		this.newProjectForm.reset();
 	}

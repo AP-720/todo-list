@@ -26,6 +26,11 @@ export class Render {
 		this.updateProjectTitle();
 	}
 
+	updateProjectsArray(newProjectsArray) {
+		this.projectsArray = newProjectsArray;
+		this.renderProject();
+	}
+
 	renderProject() {
 		this.clearElement(this.projectContainer);
 
@@ -86,19 +91,23 @@ export class Render {
 	}
 
 	deleteProject() {
-		const selectProject = this.selectedProjectId;
-
-		const updatedProjectArray = this.projectsArray.filter(
-			(project) => project.id !== selectProject
+		//  Used splice instead of filter as filter was causing issues with stale references
+		const projectIndex = this.projectsArray.findIndex(
+			(project) => project.id === this.selectedProjectId
 		);
 
-		this.projectsArray = updatedProjectArray;
+		if (projectIndex !== -1) {
+			this.projectsArray.splice(projectIndex, 1);
+		}
+
 		this.localStorage.saveProjects(this.projectsArray);
-		this.selectedProjectId = "";
+
+		this.selectedProjectId = null;
 		this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+
 		this.projectTitle.innerText = "Project Title";
-		this.renderProject();
-		console.log(this.projectsArray);
+
+		this.updateProjectsArray(this.projectsArray);
 	}
 
 	// Better way to remove child as doesn't reparse the whole DOM so more efficient
