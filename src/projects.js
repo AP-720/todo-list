@@ -14,8 +14,6 @@ export class Projects {
 		this.newProjectForm = document.querySelector("[data-new-project-form]");
 		this.newProjectInput = document.querySelector("[data-new-project-input]");
 
-		this.render.renderProject();
-
 		this.newProjectForm.addEventListener("submit", (e) =>
 			this.addNewProject(e)
 		);
@@ -43,7 +41,7 @@ export class Projects {
 		this.LocalStorage.saveSelectedProjectId(this.selectedProjectId);
 
 		this.render.selectedProjectId = this.selectedProjectId;
-		this.render.updateProjectsArray(this.projectsArray);
+		this.render.render();
 
 		this.newProjectForm.reset();
 	}

@@ -1,35 +1,46 @@
 import { LocalStorage } from "./localStorage";
+import { Tasks } from "./tasks";
 
 export class Render {
 	constructor(projectsArray) {
 		this.localStorage = new LocalStorage();
+		this.tasks = new Tasks();
 
 		this.projectsArray = projectsArray;
 		this.selectedProjectId = this.localStorage.getSelectedProjectId();
 
 		this.projectContainer = document.querySelector("[data-project-list]");
+
 		this.modal = document.querySelector("[data-task-modal]");
 		this.addTaskForm = document.getElementById("add-task");
 		this.projectTitle = document.querySelector("[data-project-name-title]");
+		this.taskBody = document.querySelector("[data-task-body]");
 
 		this.createTaskBtn = document.querySelector("[data-new-task-btn]");
 		this.cancelTaskBtn = document.querySelector("[data-cancel-task-btn]");
 		this.deleteProjectBtn = document.querySelector("[data-delete-project-btn]");
+		this.addNewTaskBtn = document.querySelector("[data-add-task-btn]");
 
 		this.createTaskBtn.addEventListener("click", () => this.showModal());
 		this.cancelTaskBtn.addEventListener("click", () => this.closeModal());
+		this.addNewTaskBtn.addEventListener("click", (event) =>
+			this.handleAddTask(event)
+		);
+
 		this.projectContainer.addEventListener("click", (event) =>
 			this.getSelectedProjectId(event)
 		);
 		this.deleteProjectBtn.addEventListener("click", () => this.deleteProject());
-
-		this.updateProjectTitle();
 	}
 
-	updateProjectsArray(newProjectsArray) {
-		this.projectsArray = newProjectsArray;
+	render() {
 		this.renderProject();
 	}
+
+	// updateProjectsArray(newProjectsArray) {
+	// 	this.projectsArray = newProjectsArray;
+	// 	this.renderProject();
+	// }
 
 	renderProject() {
 		this.clearElement(this.projectContainer);
@@ -50,15 +61,6 @@ export class Render {
 		});
 
 		this.updateProjectTitle();
-	}
-
-	showModal() {
-		this.modal.showModal();
-	}
-
-	closeModal() {
-		this.addTaskForm.reset();
-		this.modal.close();
 	}
 
 	getSelectedProjectId(event) {
@@ -107,11 +109,46 @@ export class Render {
 
 		this.projectTitle.innerText = "Project Title";
 
-		this.updateProjectsArray(this.projectsArray);
+		console.log(this.projectsArray);
+
+		this.render();
+	}
+
+	// Tasks
+
+	renderTasks(selectedProject) {
+		selectedProject;
+	}
+
+	handleAddTask(event) {
+		event.preventDefault();
+
+		const taskBody = document.getElementById("task").value;
+		const dueDate = document.getElementById("date-due").value;
+		const priority = document.getElementById("priority").value;
+
+		this.tasks.addNewTask(
+			taskBody,
+			dueDate,
+			priority,
+			this.projectsArray,
+			this.selectedProjectId
+		);
+
+		this.closeModal();
 	}
 
 	// Better way to remove child as doesn't reparse the whole DOM so more efficient
 	clearElement(element) {
 		element.replaceChildren();
+	}
+
+	showModal() {
+		this.modal.showModal();
+	}
+
+	closeModal() {
+		this.addTaskForm.reset();
+		this.modal.close();
 	}
 }
