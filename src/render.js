@@ -1,5 +1,6 @@
 import { LocalStorage } from "./localStorage";
 import { Tasks } from "./tasks";
+import { format, parseISO } from "date-fns";
 
 export class Render {
 	constructor(projectsArray) {
@@ -15,6 +16,7 @@ export class Render {
 		this.addTaskForm = document.getElementById("add-task");
 		this.projectTitle = document.querySelector("[data-project-name-title]");
 		this.taskBody = document.querySelector("[data-task-body]");
+		this.taskTemplate = document.querySelector("[data-task-template]");
 
 		this.createTaskBtn = document.querySelector("[data-new-task-btn]");
 		this.cancelTaskBtn = document.querySelector("[data-cancel-task-btn]");
@@ -35,12 +37,8 @@ export class Render {
 
 	render() {
 		this.renderProject();
+		this.renderTasks(this.selectedProjectId);
 	}
-
-	// updateProjectsArray(newProjectsArray) {
-	// 	this.projectsArray = newProjectsArray;
-	// 	this.renderProject();
-	// }
 
 	renderProject() {
 		this.clearElement(this.projectContainer);
@@ -76,6 +74,7 @@ export class Render {
 			event.target.classList.add("selected-project");
 
 			this.updateProjectTitle();
+			this.render();
 
 			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
 		}
@@ -109,15 +108,46 @@ export class Render {
 
 		this.projectTitle.innerText = "Project Title";
 
-		console.log(this.projectsArray);
-
 		this.render();
 	}
 
 	// Tasks
 
-	renderTasks(selectedProject) {
-		selectedProject;
+	renderTasks(selectedProjectId) {
+		this.clearElement(this.taskBody);
+		const selectedProject = this.projectsArray.find(
+			(project) => project.id === selectedProjectId
+		);
+
+		if (selectedProject) {
+			selectedProject.tasks.forEach((task) => {
+				const newTask = this.taskTemplate.content.cloneNode(true);
+				const checkBox = newTask.querySelector("input");
+				checkBox.id = task.id;
+				checkBox.checked = task.complete;
+				const taskLabel = newTask.querySelector("label");
+				taskLabel.htmlFor = task.id;
+				taskLabel.textContent = task.taskBody;
+				const dateDue = newTask.querySelector("[data-task-dueDate]");
+				const formattedDate = format(parseISO(task.dueDate), "dd-MM-yyyy");
+				dateDue.textContent = `Due: ${formattedDate}`;
+				const taskPriority = newTask.querySelector("[data-task-priority]");
+				let priorityText;
+				switch (task.priority) {
+					case "0":
+						priorityText = "Low";
+						break;
+					case "1":
+						priorityText = "Medium";
+						break;
+					case "2":
+						priorityText = "High";
+						break;
+				}
+				taskPriority.textContent = `Priority: ${priorityText}`;
+				this.taskBody.append(newTask);
+			});
+		}
 	}
 
 	handleAddTask(event) {
@@ -127,6 +157,8 @@ export class Render {
 		const dueDate = document.getElementById("date-due").value;
 		const priority = document.getElementById("priority").value;
 
+		console.log(dueDate);
+
 		this.tasks.addNewTask(
 			taskBody,
 			dueDate,
@@ -135,6 +167,7 @@ export class Render {
 			this.selectedProjectId
 		);
 
+		this.render();
 		this.closeModal();
 	}
 

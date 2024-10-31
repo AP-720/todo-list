@@ -36,42 +36,12 @@
 					</button>
 				</div>
 
-				<div class="task-body" data-task-body>
-					<div class="task">
-						<div class="input-container">
-							<input type="checkbox" name="task-1" id="task-1" />
-							<label for="task-1">Buy Charlie birthday present</label>
-						</div>
+				<div class="task-body" data-task-body></div>
 
-						<div class="task-info">
-							<p class="task-duedate">DUE: 16/10/2024</p>
-							<p class="task-priority">Priority: High</p>
-							<div class="task-btn-container">
-								<button><i class="far fa-pen-to-square"></i></button>
-								<button><i class="fa-regular fa-trash-can"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="task">
-						<div class="input-container">
-							<input type="checkbox" name="task-1" id="task-1" />
-							<label for="task-1">Buy Charlie birthday present</label>
-						</div>
-
-						<div class="task-info">
-							<p class="task-duedate">DUE: 16/10/2024</p>
-							<p class="task-priority">Priority: High</p>
-							<div class="task-btn-container">
-								<button><i class="far fa-pen-to-square"></i></button>
-								<button><i class="fa-regular fa-trash-can"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="delete-btn-container">
-						<button class="delete-project-btn" data-delete-project-btn>
-							Delete Project
-						</button>
-					</div>
+				<div class="delete-btn-container">
+					<button class="delete-project-btn" data-delete-project-btn>
+						Delete Project
+					</button>
 				</div>
 			</div>
 		</div>
@@ -100,5 +70,27 @@
 				</form>
 			</div>
 		</dialog>
+
+		<template data-task-template>
+			<div class="task">
+				<div class="input-container">
+					<input type="checkbox" name="" id="" />
+					<label for=""></label>
+				</div>
+
+				<div class="task-info">
+					<p class="task-duedate" data-task-dueDate></p>
+					<p class="task-priority" data-task-priority></p>
+					<div class="task-btn-container">
+						<button data-edit-task-btn>
+							<i class="far fa-pen-to-square"></i>
+						</button>
+						<button data-delete-task-btn>
+							<i class="fa-regular fa-trash-can"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</template>
 	</body>
 </html>
