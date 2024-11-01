@@ -33,6 +33,10 @@ export class Render {
 			this.getSelectedProjectId(event)
 		);
 		this.deleteProjectBtn.addEventListener("click", () => this.deleteProject());
+
+		this.taskBody.addEventListener("change", (event) =>
+			this.toggleTaskCompletion(event)
+		);
 	}
 
 	render() {
@@ -169,6 +173,20 @@ export class Render {
 
 		this.render();
 		this.closeModal();
+	}
+
+	toggleTaskCompletion(event) {
+		if (event.target.matches("input[type='checkbox']")) {
+			const taskId = event.target.id;
+
+			this.tasks.toggleComplete(
+				taskId,
+				this.projectsArray,
+				this.selectedProjectId
+			);
+
+			this.localStorage.saveProjects(this.projectsArray);
+		}
 	}
 
 	// Better way to remove child as doesn't reparse the whole DOM so more efficient

@@ -33,4 +33,14 @@ export class Tasks {
 			this.localStorage.saveProjects(projectsArray);
 		}
 	}
+
+	toggleComplete(taskId, projectsArray, selectedProjectId) {
+		const selectedProject = projectsArray.find(
+			(project) => project.id === selectedProjectId
+		);
+		const selectedTask = selectedProject.tasks.find(
+			(task) => task.id === taskId
+		);
+		selectedTask.complete = !selectedTask.complete;
+	}
 }
