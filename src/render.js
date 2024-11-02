@@ -37,6 +37,10 @@ export class Render {
 		this.taskBody.addEventListener("change", (event) =>
 			this.toggleTaskCompletion(event)
 		);
+
+		this.taskBody.addEventListener("click", (event) =>
+			this.handleDeleteTask(event)
+		);
 	}
 
 	render() {
@@ -126,6 +130,8 @@ export class Render {
 		if (selectedProject) {
 			selectedProject.tasks.forEach((task) => {
 				const newTask = this.taskTemplate.content.cloneNode(true);
+				const setTaskId = newTask.querySelector(".task");
+				setTaskId.setAttribute("data-task", task.id);
 				const checkBox = newTask.querySelector("input");
 				checkBox.id = task.id;
 				checkBox.checked = task.complete;
@@ -186,6 +192,22 @@ export class Render {
 			);
 
 			this.localStorage.saveProjects(this.projectsArray);
+		}
+	}
+
+	handleDeleteTask(event) {
+		// Need to use closest because of the icon in the button.
+		const deleteButton = event.target.closest("[data-delete-task-btn]");
+
+		const task = event.target.closest(".task");
+
+		const taskId = task.dataset.task;
+
+		if (deleteButton) {
+			this.tasks.deleteTask(taskId, this.projectsArray, this.selectedProjectId);
+
+			this.localStorage.saveProjects(this.projectsArray);
+			this.render();
 		}
 	}
 

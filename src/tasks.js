@@ -43,4 +43,15 @@ export class Tasks {
 		);
 		selectedTask.complete = !selectedTask.complete;
 	}
+
+	deleteTask(taskId, projectsArray, selectedProjectId) {
+		const selectedProject = projectsArray.find(
+			(project) => project.id === selectedProjectId
+		);
+		const selectedTask = selectedProject.tasks.findIndex(
+			(task) => task.id === taskId
+		);
+
+		selectedProject.tasks.splice(selectedTask, 1);
+	}
 }
