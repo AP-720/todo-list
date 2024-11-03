@@ -54,4 +54,16 @@ export class Tasks {
 
 		selectedProject.tasks.splice(selectedTask, 1);
 	}
+
+	getTaskId(taskId, projectsArray, selectedProjectId) {
+		const selectedProject = projectsArray.find(
+			(project) => project.id === selectedProjectId
+		);
+
+		const selectedTask = selectedProject.tasks.find(
+			(task) => task.id === taskId
+		);
+
+        return selectedTask
+	}
 }

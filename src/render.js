@@ -23,6 +23,8 @@ export class Render {
 		this.deleteProjectBtn = document.querySelector("[data-delete-project-btn]");
 		this.addNewTaskBtn = document.querySelector("[data-add-task-btn]");
 
+		this.editingTaskId = null;
+
 		this.createTaskBtn.addEventListener("click", () => this.showModal());
 		this.cancelTaskBtn.addEventListener("click", () => this.closeModal());
 		this.addNewTaskBtn.addEventListener("click", (event) =>
@@ -41,6 +43,8 @@ export class Render {
 		this.taskBody.addEventListener("click", (event) =>
 			this.handleDeleteTask(event)
 		);
+
+		this.taskBody.addEventListener("click", (event) => this.editTask(event));
 	}
 
 	render() {
@@ -167,8 +171,6 @@ export class Render {
 		const dueDate = document.getElementById("date-due").value;
 		const priority = document.getElementById("priority").value;
 
-		console.log(dueDate);
-
 		this.tasks.addNewTask(
 			taskBody,
 			dueDate,
@@ -208,6 +210,26 @@ export class Render {
 
 			this.localStorage.saveProjects(this.projectsArray);
 			this.render();
+		}
+	}
+
+	editTask(event) {
+		const editButton = event.target.closest("[data-edit-task-btn]");
+		const task = event.target.closest(".task");
+		const taskId = task.dataset.task;
+
+		if (editButton) {
+			const selectedTask = this.tasks.getTaskId(
+				taskId,
+				this.projectsArray,
+				this.selectedProjectId
+			);
+
+			this.showModal();
+
+			document.getElementById("task").value = selectedTask.taskBody;
+			document.getElementById("date-due").value = selectedTask.dueDate;
+			document.getElementById("priority").value = selectedTask.priority;
 		}
 	}
 
