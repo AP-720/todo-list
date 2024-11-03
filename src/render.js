@@ -28,7 +28,7 @@ export class Render {
 		this.createTaskBtn.addEventListener("click", () => this.showModal());
 		this.cancelTaskBtn.addEventListener("click", () => this.closeModal());
 		this.addNewTaskBtn.addEventListener("click", (event) =>
-			this.handleAddTask(event)
+			this.handleAddOrEditTask(event)
 		);
 
 		this.projectContainer.addEventListener("click", (event) =>
@@ -164,20 +164,34 @@ export class Render {
 		}
 	}
 
-	handleAddTask(event) {
+	// Adding and editing tasks
+	handleAddOrEditTask(event) {
 		event.preventDefault();
 
 		const taskBody = document.getElementById("task").value;
 		const dueDate = document.getElementById("date-due").value;
 		const priority = document.getElementById("priority").value;
 
-		this.tasks.addNewTask(
-			taskBody,
-			dueDate,
-			priority,
-			this.projectsArray,
-			this.selectedProjectId
-		);
+		// When clicking edit button it updates the editingTask ID
+		if (this.editingTaskId) {
+			this.tasks.updateTask(
+				this.editingTaskId,
+				taskBody,
+				dueDate,
+				priority,
+				this.projectsArray,
+				this.selectedProjectId
+			);
+			this.editingTaskId = null; // Reset after editing
+		} else {
+			this.tasks.addNewTask(
+				taskBody,
+				dueDate,
+				priority,
+				this.projectsArray,
+				this.selectedProjectId
+			);
+		}
 
 		this.render();
 		this.closeModal();
@@ -216,11 +230,11 @@ export class Render {
 	editTask(event) {
 		const editButton = event.target.closest("[data-edit-task-btn]");
 		const task = event.target.closest(".task");
-		const taskId = task.dataset.task;
 
 		if (editButton) {
+			this.editingTaskId = task.dataset.task;
 			const selectedTask = this.tasks.getTaskId(
-				taskId,
+				this.editingTaskId,
 				this.projectsArray,
 				this.selectedProjectId
 			);
@@ -230,6 +244,8 @@ export class Render {
 			document.getElementById("task").value = selectedTask.taskBody;
 			document.getElementById("date-due").value = selectedTask.dueDate;
 			document.getElementById("priority").value = selectedTask.priority;
+			document.querySelector("[data-form-title]").innerText = "Edit Task";
+			document.querySelector("[data-add-task-btn]").innerText = "Edit Task";
 		}
 	}
 
@@ -245,5 +261,8 @@ export class Render {
 	closeModal() {
 		this.addTaskForm.reset();
 		this.modal.close();
+		// Reset the modal back to add task mode
+		document.querySelector("[data-form-title]").innerText = "Add Task";
+		document.querySelector("[data-add-task-btn]").innerText = "Add Task";
 	}
 }

@@ -64,6 +64,26 @@ export class Tasks {
 			(task) => task.id === taskId
 		);
 
-        return selectedTask
+		return selectedTask;
+	}
+
+	updateTask(
+		taskId,
+		taskBody,
+		dueDate,
+		priority,
+		projectsArray,
+		selectedProjectId
+	) {
+		const selectedTask = this.getTaskId(
+			taskId,
+			projectsArray,
+			selectedProjectId
+		);
+
+		selectedTask.taskBody = taskBody;
+		selectedTask.dueDate = dueDate;
+		selectedTask.priority = priority;
+		this.localStorage.saveProjects(projectsArray);
 	}
 }
