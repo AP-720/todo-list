@@ -22,6 +22,7 @@ export class Render {
 		this.cancelTaskBtn = document.querySelector("[data-cancel-task-btn]");
 		this.deleteProjectBtn = document.querySelector("[data-delete-project-btn]");
 		this.addNewTaskBtn = document.querySelector("[data-add-task-btn]");
+		this.allTasks = document.querySelector("[data-all-tasks]");
 
 		this.editingTaskId = null;
 
@@ -30,6 +31,8 @@ export class Render {
 		this.addNewTaskBtn.addEventListener("click", (event) =>
 			this.handleAddOrEditTask(event)
 		);
+
+		this.allTasks.addEventListener("click", () => this.renderAllTasks());
 
 		this.projectContainer.addEventListener("click", (event) =>
 			this.getSelectedProjectId(event)
@@ -73,6 +76,53 @@ export class Render {
 		this.updateProjectTitle();
 	}
 
+	renderAllTasks() {
+		this.projectTitle.innerText = "All Tasks";
+
+		this.clearElement(this.taskBody);
+
+		const allProjectElements =
+			this.projectContainer.querySelectorAll(".project-name");
+		allProjectElements.forEach((projectElement) => {
+			projectElement.classList.remove("selected-project");
+		});
+
+		this.projectsArray.forEach((project) => {
+			project.tasks.forEach((task) => {
+				const newTask = this.taskTemplate.content.cloneNode(true);
+				const setTaskId = newTask.querySelector(".task");
+				setTaskId.setAttribute("data-task", task.id);
+				const checkBox = newTask.querySelector("input");
+				checkBox.id = task.id;
+				checkBox.checked = task.complete;
+				const taskLabel = newTask.querySelector("label");
+				taskLabel.htmlFor = task.id;
+				taskLabel.textContent = task.taskBody;
+				const dateDue = newTask.querySelector("[data-task-dueDate]");
+				const formattedDate = format(parseISO(task.dueDate), "dd-MM-yyyy");
+				dateDue.textContent = `Due: ${formattedDate}`;
+				const taskPriority = newTask.querySelector("[data-task-priority]");
+				let priorityText;
+				switch (task.priority) {
+					case "0":
+						priorityText = "Low";
+						break;
+					case "1":
+						priorityText = "Medium";
+						break;
+					case "2":
+						priorityText = "High";
+						break;
+				}
+				taskPriority.textContent = `Priority: ${priorityText}`;
+				this.taskBody.append(newTask);
+			});
+		});
+
+		this.selectedProjectId = null;
+		this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+	}
+
 	getSelectedProjectId(event) {
 		if (event.target && event.target.nodeName === "LI") {
 			this.selectedProjectId = event.target.getAttribute("data-project-id");
@@ -104,23 +154,24 @@ export class Render {
 	}
 
 	deleteProject() {
-		//  Used splice instead of filter as filter was causing issues with stale references
-		const projectIndex = this.projectsArray.findIndex(
-			(project) => project.id === this.selectedProjectId
-		);
+		if (this.selectedProjectId) {
+			//  Used splice instead of filter as filter was causing issues with stale references
+			const projectIndex = this.projectsArray.findIndex(
+				(project) => project.id === this.selectedProjectId
+			);
 
-		if (projectIndex !== -1) {
-			this.projectsArray.splice(projectIndex, 1);
+			if (projectIndex !== -1) {
+				this.projectsArray.splice(projectIndex, 1);
+			}
+
+			this.localStorage.saveProjects(this.projectsArray);
+
+			this.selectedProjectId = null;
+			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+
+			this.render();
+			this.renderAllTasks();
 		}
-
-		this.localStorage.saveProjects(this.projectsArray);
-
-		this.selectedProjectId = null;
-		this.localStorage.saveSelectedProjectId(this.selectedProjectId);
-
-		this.projectTitle.innerText = "Project Title";
-
-		this.render();
 	}
 
 	// Tasks
@@ -255,7 +306,9 @@ export class Render {
 	}
 
 	showModal() {
-		this.modal.showModal();
+		if (this.selectedProjectId) {
+			this.modal.showModal();
+		}
 	}
 
 	closeModal() {

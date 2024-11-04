@@ -9,3 +9,4 @@ import { Render } from "./render";
 const project = new Projects();
 
 project.render.render();
+project.render.renderAllTasks();

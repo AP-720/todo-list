@@ -38,7 +38,21 @@ body {
 	color: var(--green);
 	font-size: 3.5rem;
 	padding-top: 25px;
-	padding-bottom: 25px;
+	padding-bottom: 25%;
+}
+
+.all-tasks {
+	font-size: 2.2rem;
+	padding-bottom: 10%;
+	color: var(--light-grey);
+	text-decoration: underline rgba(255, 255, 255, 0);
+	transition: text-decoration-color 300ms;
+}
+
+.all-tasks:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-color: rgba(215, 215, 215, 1);
 }
 
 .project-title {
@@ -58,7 +72,7 @@ body {
 
 .project-name {
 	font-size: 1.8rem;
-	transition: transform 0.25s ease-in-out;
+	transition: transform 300ms ease-in-out;
 }
 
 .project-name:hover {
