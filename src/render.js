@@ -76,53 +76,6 @@ export class Render {
 		this.updateProjectTitle();
 	}
 
-	renderAllTasks() {
-		this.projectTitle.innerText = "All Tasks";
-
-		this.clearElement(this.taskBody);
-
-		const allProjectElements =
-			this.projectContainer.querySelectorAll(".project-name");
-		allProjectElements.forEach((projectElement) => {
-			projectElement.classList.remove("selected-project");
-		});
-
-		this.projectsArray.forEach((project) => {
-			project.tasks.forEach((task) => {
-				const newTask = this.taskTemplate.content.cloneNode(true);
-				const setTaskId = newTask.querySelector(".task");
-				setTaskId.setAttribute("data-task", task.id);
-				const checkBox = newTask.querySelector("input");
-				checkBox.id = task.id;
-				checkBox.checked = task.complete;
-				const taskLabel = newTask.querySelector("label");
-				taskLabel.htmlFor = task.id;
-				taskLabel.textContent = task.taskBody;
-				const dateDue = newTask.querySelector("[data-task-dueDate]");
-				const formattedDate = format(parseISO(task.dueDate), "dd-MM-yyyy");
-				dateDue.textContent = `Due: ${formattedDate}`;
-				const taskPriority = newTask.querySelector("[data-task-priority]");
-				let priorityText;
-				switch (task.priority) {
-					case "0":
-						priorityText = "Low";
-						break;
-					case "1":
-						priorityText = "Medium";
-						break;
-					case "2":
-						priorityText = "High";
-						break;
-				}
-				taskPriority.textContent = `Priority: ${priorityText}`;
-				this.taskBody.append(newTask);
-			});
-		});
-
-		this.selectedProjectId = null;
-		this.localStorage.saveSelectedProjectId(this.selectedProjectId);
-	}
-
 	getSelectedProjectId(event) {
 		if (event.target && event.target.nodeName === "LI") {
 			this.selectedProjectId = event.target.getAttribute("data-project-id");
@@ -215,6 +168,53 @@ export class Render {
 		}
 	}
 
+	renderAllTasks() {
+		this.projectTitle.innerText = "All Tasks";
+
+		this.clearElement(this.taskBody);
+
+		const allProjectElements =
+			this.projectContainer.querySelectorAll(".project-name");
+		allProjectElements.forEach((projectElement) => {
+			projectElement.classList.remove("selected-project");
+		});
+
+		this.projectsArray.forEach((project) => {
+			project.tasks.forEach((task) => {
+				const newTask = this.taskTemplate.content.cloneNode(true);
+				const setTaskId = newTask.querySelector(".task");
+				setTaskId.setAttribute("data-task", task.id);
+				const checkBox = newTask.querySelector("input");
+				checkBox.id = task.id;
+				checkBox.checked = task.complete;
+				const taskLabel = newTask.querySelector("label");
+				taskLabel.htmlFor = task.id;
+				taskLabel.textContent = task.taskBody;
+				const dateDue = newTask.querySelector("[data-task-dueDate]");
+				const formattedDate = format(parseISO(task.dueDate), "dd-MM-yyyy");
+				dateDue.textContent = `Due: ${formattedDate}`;
+				const taskPriority = newTask.querySelector("[data-task-priority]");
+				let priorityText;
+				switch (task.priority) {
+					case "0":
+						priorityText = "Low";
+						break;
+					case "1":
+						priorityText = "Medium";
+						break;
+					case "2":
+						priorityText = "High";
+						break;
+				}
+				taskPriority.textContent = `Priority: ${priorityText}`;
+				this.taskBody.append(newTask);
+			});
+		});
+
+		this.selectedProjectId = null;
+		this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+	}
+
 	// Adding and editing tasks
 	handleAddOrEditTask(event) {
 		event.preventDefault();
@@ -252,11 +252,19 @@ export class Render {
 		if (event.target.matches("input[type='checkbox']")) {
 			const taskId = event.target.id;
 
+			// Allows toggle when All Tasks is selected.
+			const projectId = this.findProjectByTaskId(taskId, this.projectsArray);
+			this.selectedProjectId = projectId.id;
+			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+			//
+
 			this.tasks.toggleComplete(
 				taskId,
 				this.projectsArray,
 				this.selectedProjectId
 			);
+
+			this.render();
 
 			this.localStorage.saveProjects(this.projectsArray);
 		}
@@ -271,6 +279,11 @@ export class Render {
 		const taskId = task.dataset.task;
 
 		if (deleteButton) {
+			// Allows deleting when All Tasks is selected.
+			const projectId = this.findProjectByTaskId(taskId, this.projectsArray);
+			this.selectedProjectId = projectId.id;
+			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+			//
 			this.tasks.deleteTask(taskId, this.projectsArray, this.selectedProjectId);
 
 			this.localStorage.saveProjects(this.projectsArray);
@@ -284,6 +297,15 @@ export class Render {
 
 		if (editButton) {
 			this.editingTaskId = task.dataset.task;
+			// Allows editing when All Tasks is selected.
+			const projectId = this.findProjectByTaskId(
+				this.editingTaskId,
+				this.projectsArray
+			);
+			this.selectedProjectId = projectId.id;
+			this.localStorage.saveSelectedProjectId(this.selectedProjectId);
+			this.render();
+			//
 			const selectedTask = this.tasks.getTaskId(
 				this.editingTaskId,
 				this.projectsArray,
@@ -298,6 +320,13 @@ export class Render {
 			document.querySelector("[data-form-title]").innerText = "Edit Task";
 			document.querySelector("[data-add-task-btn]").innerText = "Edit Task";
 		}
+	}
+
+	// Finds the project by searching the tasks array for a task with the matching ID
+	findProjectByTaskId(taskId, projectsArray) {
+		return projectsArray.find((project) =>
+			project.tasks.some((task) => task.id === taskId)
+		);
 	}
 
 	// Better way to remove child as doesn't reparse the whole DOM so more efficient
