@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Todo List</title>
+	<script defer src="main.js"></script></head>
+	<body>
+		<div class="sidebar">
+			<h1 class="title">TəDu</h1>
+
+			<h2 class="all-tasks" data-all-tasks>All Tasks</h2>
+
+			<h2 class="project-title">Projects</h2>
+			<ul class="project-list" data-project-list></ul>
+
+			<form action="" data-new-project-form>
+				<input
+					type="text"
+					id="new-project"
+					class="new-project-input"
+					name="new-project"
+					data-new-project-input
+				/>
+
+				<button class="btn-new-project">+</button>
+			</form>
+		</div>
+
+		<div class="body-container">
+			<div class="tasks-container">
+				<div class="project-container">
+					<h2 class="project-name-title" data-project-name-title>
+						Project Name
+					</h2>
+					<button class="new-task-btn" data-new-task-btn>
+						<i class="fa-solid fa-circle-plus"></i>
+					</button>
+				</div>
+
+				<div class="task-body" data-task-body></div>
+
+				<div class="delete-btn-container">
+					<button class="delete-project-btn" data-delete-project-btn>
+						Delete Project
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<dialog class="task-modal" data-task-modal>
+			<div class="task-form-container">
+				<h3 class="form-title" data-form-title>Add Task</h3>
+				<form action="" id="add-task">
+					<label for="task">Task:</label>
+					<input type="text" name="task" id="task" required />
+
+					<label for="date-due">Date Due:</label>
+					<input type="date" name="date-due" id="date-due" required />
+
+					<label for="priority">Priority:</label>
+					<select name="priority" id="priority">
+						<option value="0" selected>Low</option>
+						<option value="1">Medium</option>
+						<option value="2">High</option>
+					</select>
+
+					<div class="form-btns">
+						<button class="cancel-task-btn" data-cancel-task-btn>Cancel</button>
+						<button class="add-task-btn" data-add-task-btn>Add Task</button>
+					</div>
+				</form>
+			</div>
+		</dialog>
+
+		<template data-task-template>
+			<div class="task" data-task="">
+				<div class="input-container">
+					<input type="checkbox" name="" id="" />
+					<label for=""></label>
+				</div>
+
+				<div class="task-info">
+					<p class="task-duedate" data-task-dueDate></p>
+					<p class="task-priority" data-task-priority></p>
+					<div class="task-btn-container">
+						<button data-edit-task-btn>
+							<i class="far fa-pen-to-square"></i>
+						</button>
+						<button data-delete-task-btn>
+							<i class="fa-regular fa-trash-can"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</template>
+	</body>
+</html>
